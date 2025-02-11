@@ -10,7 +10,7 @@ use Google\Service\Sheets\ValueRange as GoogleSheetsValueRange;
 class Conversions
 {
     // Визначення констант класу
-    public const GOOGLE_ACCOUNT_KEY_FILE_PATH = '/var/www/adsconversion.loc/common/config/configs/evident-alloy-377514-91abcd0f9793_ac_ba2.json';
+    public const GOOGLE_ACCOUNT_KEY_FILE_PATH = '/var/www/AdsConversion.loc/common/services/conversions/configs/evident-alloy-377514-91abcd0f9793_ac_ba2.json';
     public const SPREADSHEET_ID = '1Lsjq5Srj6UHtx6J8OGZ9tsFIrmwgpj6Ckf6QDhINqN0';
     public const CLIENT_ID = 'dc6f259d348413b1490795006518fe';
     public const CLIENT_SECRET = 'f92044288ab57da24b0e0a0caf1f03';
