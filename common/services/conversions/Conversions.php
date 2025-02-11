@@ -70,17 +70,34 @@ class Conversions
         /**
          * Завантаження данних по Апі з Адмітаду та підготовка данних
          */
+        /*
         $data = $apiAdmitad->get('/statistics/actions/', array(
             //'date_start'=>'01.01.2023',
             'action_id_start' =>$this->admitadConfig['action_start_id'],
             //'offset' => 0,
             'limit' => 1
         ));
+        */
+
+        $startDate = date('d.m.Y', strtotime('-2 days')); // Дата три дні тому
+        $endDate = date('d.m.Y'); // Сьогоднішня дата
+
+        $data = $apiAdmitad->get('/statistics/actions/', array(
+            //'action_id_start' =>$this->admitadConfig['action_start_id'],
+            'date_start'=>$startDate,
+            'limit' => 500
+        ));
 
         $body = $data->getBody();
 
         // Декодування JSON у масив
         $responseArray = json_decode($body, true);
+
+        /*
+        echo '<pre>';
+        var_dump($responseArray["results"]);
+        die();
+        */
 
 
 
@@ -171,10 +188,10 @@ class Conversions
         foreach ($new_data as $product) {
             $values[] = array(
                 $product['google_click_id'],
-                'sale',
+                $product['advcampaign_name'],
                 $product['con_time'],
-                '1',
-                'UAH'
+                $product['con_value'],
+                $product['currency']
             );
         }
 
