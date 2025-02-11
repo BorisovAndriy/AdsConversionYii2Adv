@@ -51,7 +51,11 @@ class Conversions
 
         // Декодування JSON у масив
         $responseArray = json_decode($body, true);
-
+/*
+        echo '<pre>';
+        var_dump($responseArray["results"] );
+        die();
+*/
         foreach ($responseArray["results"] as $key => $subres){
             if(!empty($subres['subid4'])){
 
@@ -64,7 +68,6 @@ class Conversions
                 $new_data[$subres['subid4']]['currency'] =$subres['currency'];
                 $new_data[$subres['subid4']]['click_country_code'] =$subres['click_country_code'];
                 $new_data[$subres['subid4']]['advcampaign_name'] =$subres['advcampaign_name'];
-
             }
         }
 
@@ -93,7 +96,7 @@ class Conversions
          * Очистка попередніх результатів у Гугл таблиці
          */
         $rowcount = count($response->values) + 1;
-        $range = 'conversion-import-template!A8:E'.$rowcount; // the range to clear, the 23th and 24th lines
+        $range = 'conversion-import-template!A4:E'.$rowcount; // Очищуємо починаючи з 4-го рядка
         $clear = new GoogleSheetsService\ClearValuesRequest();
         $service->spreadsheets_values->clear($this->admitadConfig['spreadsheet_id'], $range, $clear);
 
@@ -104,19 +107,23 @@ class Conversions
         foreach ($new_data as $product) {
             $values[] = array(
                 $product['google_click_id'],
-                $product['advcampaign_name'],
+                'sale',
                 $product['con_time'],
                 $product['con_value'],
-                $product['currency']
+                $product['currency'],
             );
         }
+
+        //todo fix  Дата в далекому майбутньому.
+
+
 
         /**
          * Запис результатів у Гугл таблицю
          *
          * https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption
          */
-        $row_add = 'conversion-import-template!A8';
+        $row_add = 'conversion-import-template!A4';
         $body    = new GoogleSheetsValueRange( [ 'values' => $values ] );
         $options = array( 'valueInputOption' => 'USER_ENTERED' );
         $service->spreadsheets_values->update( $this->admitadConfig['spreadsheet_id'], $row_add, $body, $options );
@@ -131,7 +138,7 @@ class Conversions
     private function loadConfig ($configFile)
     {
 
-        $filePath = '/var/www/AdsConversion.loc/common/services/conversions/configs/config_adm_ba.json';
+        $filePath = '/var/www/AdsConversion.loc/common/services/conversions/configs/config_adm_'.$configFile.'.json';
 
         if (!file_exists($filePath)) {
             throw new \Exception('Config file '.$filePath.' does not exist');
