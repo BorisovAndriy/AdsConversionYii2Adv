@@ -11,41 +11,15 @@ class Conversions
 {
     // Визначення констант класу
     public const GOOGLE_ACCOUNT_KEY_FILE_PATH = '/var/www/AdsConversion.loc/common/services/conversions/configs/evident-alloy-377514-91abcd0f9793_ac_ba2.json';
-    public const SPREADSHEET_ID = '1Lsjq5Srj6UHtx6J8OGZ9tsFIrmwgpj6Ckf6QDhINqN0';
-    public const CLIENT_ID = 'dc6f259d348413b1490795006518fe';
-    public const CLIENT_SECRET = 'f92044288ab57da24b0e0a0caf1f03';
-    public const SCOPE = 'statistics';
-
-    private $userName;
-    private $userPassword;
-    private $actionStartId;
-    private $actionStartedAt;
-
-    private $configFile = false;
 
     private $admitadConfig;
-
 
     public function __construct($configFile)
     {
 
-        //$this->$configFile = $configFile;
         $this->loadConfig($configFile);
 
-
-        /****
-
-
-
-         */
-
-
         $apiAdmitad = new AdmitadApi();
-
-
-
-
-
 
         $admitad_response = $apiAdmitad->authorizeByPassword(
             $this->admitadConfig['client_id'],
@@ -61,96 +35,38 @@ class Conversions
         // Отримання access_token
         $access_token = $response_data['access_token'] ?? null;
 
-
-        //die();
         $apiAdmitad = new AdmitadApi($access_token);
-
-
 
         /**
          * Завантаження данних по Апі з Адмітаду та підготовка данних
          */
-        /*
-        $data = $apiAdmitad->get('/statistics/actions/', array(
-            //'date_start'=>'01.01.2023',
-            'action_id_start' =>$this->admitadConfig['action_start_id'],
-            //'offset' => 0,
-            'limit' => 1
-        ));
-        */
-
         $startDate = date('d.m.Y', strtotime('-2 days')); // Дата три дні тому
-        $endDate = date('d.m.Y'); // Сьогоднішня дата
 
-        $data = $apiAdmitad->get('/statistics/actions/', array(
-            //'action_id_start' =>$this->admitadConfig['action_start_id'],
+        $body = $apiAdmitad->get('/statistics/actions/', array(
             'date_start'=>$startDate,
             'limit' => 500
-        ));
+        ))->getBody();
 
-        $body = $data->getBody();
+        //$body = $data->getBody();
 
         // Декодування JSON у масив
         $responseArray = json_decode($body, true);
 
-        /*
-        echo '<pre>';
-        var_dump($responseArray["results"]);
-        die();
-        */
+        foreach ($responseArray["results"] as $key => $subres){
+            if(!empty($subres['subid4'])){
 
+                if (empty($new_data[$subres['subid4']]['con_value']))
+                    $new_data[$subres['subid4']]['con_value'] = 0;
 
+                $new_data[$subres['subid4']]['google_click_id'] =$subres['subid4'];
+                $new_data[$subres['subid4']]['con_time'] =$subres['action_date'];
+                $new_data[$subres['subid4']]['con_value'] +=$subres["positions"][0]['payment'];
+                $new_data[$subres['subid4']]['currency'] =$subres['currency'];
+                $new_data[$subres['subid4']]['click_country_code'] =$subres['click_country_code'];
+                $new_data[$subres['subid4']]['advcampaign_name'] =$subres['advcampaign_name'];
 
-
-        // Перевірка наявності ключів 'count' та 'id'
-        if (isset($responseArray['_meta']['count']) && isset($responseArray['results'][0]['id'])) {
-            $total_action_count = $responseArray['_meta']['count'];
-            $start_action_id = $responseArray['results'][0]['id'];
-        } else {
-            // Обробка випадку, коли ключі відсутні
-            $total_action_count = null;
-            $start_action_id = null;
-        }
-
-        /**
-         * Завантаження данних по Апі з Адмітаду та підготовка типізованого масиву данних
-         */
-        $new_data = array();
-        for( $i = 0; $i < $total_action_count; $i+=500)
-        {
-            $data = $apiAdmitad->get('/statistics/actions/', array(
-                'date_start'=> $this->admitadConfig['action_started_at'],
-                //'action_id_start' =>ACTION_START_ID,
-                'offset' => $i,
-                'limit' =>500
-            ));
-
-
-
-            $dataArray = $data->getBody();
-
-            // Декодування JSON у масив
-            $responseDataArray = json_decode($dataArray, true);
-
-
-            foreach ($responseDataArray["results"] as $key => $subres){
-                if(!empty($subres['subid4'])){
-
-                    if (empty($new_data[$subres['subid4']]['con_value']))
-                        $new_data[$subres['subid4']]['con_value'] = 0;
-
-                    $new_data[$subres['subid4']]['google_click_id'] =$subres['subid4'];
-                    $new_data[$subres['subid4']]['con_time'] =$subres['action_date'];
-                    $new_data[$subres['subid4']]['con_value'] +=$subres["positions"][0]['payment'];
-                    $new_data[$subres['subid4']]['currency'] =$subres['currency'];
-                    $new_data[$subres['subid4']]['click_country_code'] =$subres['click_country_code'];
-                    $new_data[$subres['subid4']]['advcampaign_name'] =$subres['advcampaign_name'];
-
-                }
             }
         }
-
-
 
 
         /**
@@ -215,15 +131,7 @@ class Conversions
     private function loadConfig ($configFile)
     {
 
-        ///var/www/fra.loc/common/services/conversions/configs
-        //$filePath = __DIR__ . '/common/services/conversions/configs/config_'.$configFile.'.php';
-
-        //$filePath = __DIR__ . '/configs/config_'.$configFile.'.php';
-
         $filePath = '/var/www/AdsConversion.loc/common/services/conversions/configs/config_adm_ba.json';
-
-       // var_dump($filePath);
-       // die();
 
         if (!file_exists($filePath)) {
             throw new \Exception('Config file '.$filePath.' does not exist');
@@ -241,26 +149,6 @@ class Conversions
 
     public function processConversions()
     {
-        /*
-        // Підготовка, очистка та запис даних у Google таблицю
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . self::GOOGLE_ACCOUNT_KEY_FILE_PATH);
-
-        $client = new GoogleClient();
-        $client->useApplicationDefaultCredentials();
-        $client->addScope('https://www.googleapis.com/auth/spreadsheets');
-        $service = new GoogleSheetsService($client);
-
-        $range = 'conversion-import-template';
-        $response = $service->spreadsheets_values->get(self::SPREADSHEET_ID, $range);
-
-        // Логіка авторизації та отримання даних з Admitad API
-        // ...
-
-        // Підготовка, очистка та запис даних у Google таблицю
-        // ...
-
-        return 'Processing complete';
-        */
         return true;
     }
 }
