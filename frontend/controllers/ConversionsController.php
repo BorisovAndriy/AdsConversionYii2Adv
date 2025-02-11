@@ -9,4 +9,9 @@ class ConversionsController extends \yii\web\Controller
         return $this->render('index');
     }
 
+    public function actionStart($alias)
+    {
+        return $this->render('start');
+    }
+
 }
