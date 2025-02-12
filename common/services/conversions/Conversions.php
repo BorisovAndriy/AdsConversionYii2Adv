@@ -40,7 +40,7 @@ class Conversions
         /**
          * Завантаження данних по Апі з Адмітаду та підготовка данних
          */
-        $startDate = date('d.m.Y', strtotime('-2 days')); // Дата три дні тому
+        $startDate = date('d.m.Y', strtotime('-14 days')); // Дата три дні тому
 
         $body = $apiAdmitad->get('/statistics/actions/', array(
             'date_start'=>$startDate,
