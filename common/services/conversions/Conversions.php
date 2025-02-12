@@ -128,11 +128,15 @@ class Conversions
         $options = array( 'valueInputOption' => 'USER_ENTERED' );
         $service->spreadsheets_values->update( $this->admitadConfig['spreadsheet_id'], $row_add, $body, $options );
 
-        echo '<a href="https://docs.google.com/spreadsheets/d/'.$this->admitadConfig['spreadsheet_id'].'">Open Spreadsheet for '.$this->admitadConfig['spreadsheet_id'].'</a><br>';
+        //echo '<a href="https://docs.google.com/spreadsheets/d/'.$this->admitadConfig['spreadsheet_id'].'">Open Spreadsheet for '.$this->admitadConfig['spreadsheet_id'].'</a><br>';
 
-        die('die');
+        return $this->admitadConfig['spreadsheet_id'];
 
+    }
 
+    public function getSpreadsheetId()
+    {
+        return $this->admitadConfig['spreadsheet_id'];
     }
 
     private function loadConfig ($configFile)

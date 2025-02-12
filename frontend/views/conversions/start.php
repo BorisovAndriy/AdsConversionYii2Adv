@@ -1,9 +1,13 @@
 <?php
 /** @var yii\web\View $this */
+use yii\helpers\Html;
 ?>
-<h1>conversions/index</h1>
+<h1>Conversions completed</h1>
 
 <p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
+    <?= Html::a(
+        'Open Spreadsheet',
+        "https://docs.google.com/spreadsheets/d/{$spreadsheet_id}",
+        ['target' => '_blank', 'rel' => 'noopener noreferrer']
+    ) ?>
 </p>
