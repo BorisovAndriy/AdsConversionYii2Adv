@@ -2,49 +2,43 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = 'Ласкаво просимо до PeachSails!';
 ?>
 <div class="site-index">
     <div class="p-5 mb-4 bg-transparent rounded-3">
         <div class="container-fluid py-5 text-center">
-            <h1 class="display-4">Congratulations!</h1>
-            <p class="fs-5 fw-light">You have successfully created your Yii-powered application.</p>
-            <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+            <h1 class="display-4">Вітаємо!</h1>
+            <p class="fs-5 fw-light">Ваша система моніторингу конверсій успішно налаштована.</p>
         </div>
     </div>
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            <div class="col-lg-4 d-flex flex-column">
+                <h2>Конверсії</h2>
+                <p>Система автоматично отримує дані про конверсії з Admitad API, аналізує їх та готує звіти.</p>
+                <p>Всі дані оновлюються в реальному часі, що дозволяє своєчасно коригувати рекламні стратегії.</p>
+                <p class="mt-auto"><a class="btn btn-outline-secondary" href="/conversions/index">Переглянути конверсії &raquo;</a></p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <div class="col-lg-4 d-flex flex-column">
+                <h2>Аналітика та звіти</h2>
+                <p>Конверсії обробляються автоматично та зберігаються в Google Таблицях для подальшого аналізу.</p>
+                <p>Дані дозволяють:
+                <ul>
+                    <li>Оцінювати ефективність рекламних кампаній.</li>
+                    <li>Визначати прибутковість трафіку.</li>
+                    <li>Оптимізувати бюджет та коригувати ставки.</li>
+                    <li>Аналізувати географію кліків та джерела трафіку.</li>
+                </ul>
+                </p>
+                <p class="mt-auto"><a class="btn btn-outline-secondary" href="/conversions/index">Переглянути аналітику &raquo;</a></p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <div class="col-lg-4 d-flex flex-column">
+                <h2>Інтеграції</h2>
+                <p>Система підтримує інтеграцію з різними рекламними платформами для точного відстеження конверсій.</p>
+                <p>Дані автоматично передаються в Google Ads для коригування стратегій у режимі реального часу.</p>
+                <p class="mt-auto"><a class="btn btn-outline-secondary" href="/integrations">Налаштувати інтеграції &raquo;</a></p>
             </div>
         </div>
 
